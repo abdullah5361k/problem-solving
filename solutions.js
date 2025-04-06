@@ -1,41 +1,18 @@
-function isPossible(positions, k, dist) {
-    let lastC = 0;
-    let placedCows = 1;
+var minimumTime = function (n, relations) {
+  const adjList = new Array(n + 1);
+  const inDegree = new Array(n + 1).fill(0);
+  for (let j = 0; j < adjList.length; j++) adjList[j] = [];
 
-    for(let i=1; i<positions.length; i++) {
-        if((positions[i] - positions[lastC]) >= dist) {
-            lastC = i;
-            placedCows++;
-        }
-    }
+  // Add edges of each vertex into adjList
+  for (let i = 0; i < n; i++) {
+    let vertex = relations[i][0];
+    let edge = relations[i][1];
+    adjList[vertex].push(edge);
+    inDegree[relations[i][1]] += 1;
+  }
+};
 
-    console.log({placedCows});
-
-    return placedCows >= k;
-}
-
-
-
-function cows(positions, k) {
-
-
-    let si = 1;
-    let ei = Math.max(...positions);
-
-
-    while(si <= ei) {
-        let mid = Math.floor((si+ei)/2);
-        console.log(isPossible(positions, k, mid));
-        if(isPossible(positions, k, mid)) {
-            si = mid + 1;
-        } else {
-            ei = mid - 1;
-        }
-    }
-
-console.log(ei);    
-
-}
-
-
-cows([0,3,4,7,9,10], 4);
+minimumTime(3, [
+  [1, 3],
+  [2, 3],
+]);
