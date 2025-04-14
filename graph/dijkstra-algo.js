@@ -1,51 +1,71 @@
-function findShortesPath(adj, src) {
-  const path = new Array(adj.length + 1).fill(Math.min());
+findShortestDistanceFromSrc = (V, adj, src) => {
+  const shortestDistance = new Array(V).fill(Infinity);
   const queue = [];
-  path[src] = 0;
-  let head = 0;
+  shortestDistance[src] = 0;
   queue.push(src);
+  let head = 0;
 
   while (head < queue.length) {
-    let nodeIdx = -1,
-      value = Math.min();
-    // Find min path element from queue
+    // Find the shortes distance vertex from queue
+    let node = -1,
+      value = Infinity;
+
     for (let i = head; i < queue.length; i++) {
-      if (path[queue[i]] < value) {
-        nodeIdx = i;
+      if (shortestDistance[queue[i]] < value) {
+        node = i;
+        value = shortestDistance[queue[i]];
       }
     }
-    const vertex = queue[nodeIdx];
-    if (nodeIdx != head) {
+
+    const currentV = queue[node];
+
+    if (head != node) {
       // Swap
-      const temp = queue[head];
-      queue[head] = queue[nodeIdx];
-      queue[nodeIdx] = temp;
+      queue[node] = queue[head];
+      queue[head] = currentV;
     }
-    head++;
 
     // Visit neighbour
-    for (let i = 0; i < adj[vertex].length; i++) {
-      const neighbour = adj[vertex][0];
-      const weight = adj[vertex][1];
-
-      if (path[neighbour] === Infinity) {
-        path[neighbour] = path[vertex] + weight;
-        queue.push(neighbour);
-      } else if (path[neighbour] > path[vertex] + weight) {
-        path[neighbour] = path[vertex] + weight;
+    for (let i = 0; i < adj[currentV].length; i++) {
+      const [v, wt] = adj[currentV][i];
+      if (shortestDistance[v] === Infinity) {
+        shortestDistance[v] = shortestDistance[currentV] + wt;
+        queue.push(v);
+      } else {
+        shortestDistance[v] = Math.min(
+          shortestDistance[v],
+          shortestDistance[currentV] + wt
+        );
       }
     }
   }
 
-  return path;
-}
+  return shortestDistance;
+};
 
-// Function to find the shortest distance of all the vertices
-// from the source vertex src.
-function dijkstra(adj, src) {
-  // code here
+const dijkstraAlgo = (V, edges, src) => {
+  // Create adj
+  const adj = new Array(V);
+  for (let i = 0; i < adj.length; i++) {
+    adj[i] = [];
+  }
 
-  return findShortesPath(adj, src);
-}
+  for (let i = 0; i < edges.length; i++) {
+    const u = edges[i][0];
+    const v = edges[i][1];
+    const wt = edges[i][2];
+    adj[u].push([v, wt]);
+    adj[v].push([u, wt]);
+  }
 
-console.log(dijkstra([[1, 9]], 0));
+  return dijkstraAlgo(V, adj, src);
+};
+
+const edges = [
+  [0, 1, 1],
+  [1, 2, 3],
+  [0, 2, 6],
+];
+console.log(dijkstraAlgo(3, edges, 2));
+
+// Output: [4, 3, 0]
