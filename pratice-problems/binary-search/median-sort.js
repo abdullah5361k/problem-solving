@@ -10,14 +10,16 @@ const findMedianSortedArrays = (nums1, nums2) => {
     if (nums1[i] <= nums2[j]) {
       if (cnt === med) {
         el1 = nums1[i];
-        // break;
+        cnt++;
+        break;
       }
       el2 = nums1[i];
       i++;
     } else {
       if (cnt === med) {
         el1 = nums2[j];
-        // break;
+        cnt++;
+        break;
       }
       el2 = nums2[j];
       j++;
@@ -28,7 +30,10 @@ const findMedianSortedArrays = (nums1, nums2) => {
   while (i < nums1.length) {
     if (cnt === med) {
       el1 = nums1[i];
-      // break;
+      cnt++;
+      break;
+    } else if (cnt < med) {
+      el2 = nums1[i];
     }
     i++, cnt++;
   }
@@ -36,12 +41,13 @@ const findMedianSortedArrays = (nums1, nums2) => {
   while (j < nums2.length) {
     if (cnt === med) {
       el1 = nums2[j];
-      // break;
+      cnt++;
+      break;
+    } else if (cnt < med) {
+      el2 = nums2[j];
     }
     j++, cnt++;
   }
-
-  console.log({ el1, el2 });
 
   if ((nums1.length + nums2.length) % 2 == 0) {
     return (el1 + el2) / 2;
@@ -49,7 +55,5 @@ const findMedianSortedArrays = (nums1, nums2) => {
 
   return el1;
 };
-
-// findMedianSortedArrays([1, 3], [2, 7]);
 
 findMedianSortedArrays([1, 3], [2, 7]);
