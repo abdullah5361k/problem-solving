@@ -1,36 +1,26 @@
-/**
- * @param {string} s
- * @return {string}
- */
+const longestPalindrome = (s) => {
+  if (!s || s.length === 1) return s;
 
-const isPalindrome = (s, i, j) => {
-  while (i <= j) {
-    if (s[i] != s[j]) return false;
-    i++, j--;
-  }
-  return true;
-};
+  let start = 0;
+  let maxLength = 0;
 
-var longestPalindrome = function (s) {
-  let i = 0;
-  let j = 1;
-  let ans = "";
-  let maxLen = 0;
-
-  while (j < s.length) {
-    const isPalin = isPalindrome(s, i, j);
-    if (isPalin) {
-      if (j - i + 1 > maxLen) {
-        maxLen = j - i + 1;
-        ans = s.slice(i, j + 1);
+  const expandMid = (left, right) => {
+    while (left >= 0 && right < s.length && s[left] === s[right]) {
+      let currentLength = right - left + 1;
+      if (currentLength > maxLength) {
+        start = left;
+        maxLength = currentLength;
       }
-      j++;
-    } else {
-      i++;
+
+      left--;
+      right++;
     }
+  };
+
+  for (let i = 0; i < s.length; i++) {
+    expandMid(i, i); // Odd length -> "aba";
+    expandMid(i, i + 1); // Even length -> "abab";
   }
 
-  return ans;
+  return s.substring(start, start + maxLength);
 };
-
-longestPalindrome("babad");
