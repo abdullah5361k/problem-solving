@@ -649,7 +649,7 @@ class BinaryTree {
 const bt = new BinaryTree();
 // console.log(bt.buildTree(nodes, 0).data);
 // const rootNode = bt.buildTree(nodes);
-// bt.preOrderTraversal(rootNode);
+// bt.preOrderTraversal(rootNode);f
 // console.log();
 // bt.inOrderTraversal(rootNode);
 // console.log();
