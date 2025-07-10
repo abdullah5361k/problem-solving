@@ -1,37 +1,37 @@
-class TreeNode {
-  constructor(val, left, right) {
-    this.val = val === undefined ? 0 : val;
-    this.left = left === undefined ? null : left;
-    this.right = right === undefined ? null : right;
-  }
+function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
 }
 
-const BST = (root) => {
-  if (!root) return { min: Infinity, max: -Infinity, isValid: true, sum: 0 };
+const flatBT = (root) => {
+  if (!root) return null;
 
-  const left = BST(root.left);
-  const right = BST(root.right);
+  const leftS = flatBT(root.left);
+  const rightS = flatBT(root.right);
 
-  if (left.isValid && right.isValid) {
-    if (root.val > left.max && root.val < right.min) {
-      let min = left.min === Infinity ? root.val : left.min;
-      let max = right.max === -Infinity ? root.val : right.max;
-      return { min, max, isValid: true, sum: left.sum + right.sum + root.val };
-    }
+  if (leftS) {
+    root.right = leftS;
+    root.left = null;
+    let temp = leftS;
+    while (temp && temp.right != null) temp = temp.right;
+    temp.right = rightS;
   }
 
-  return left.sum > right.sum
-    ? { ...left, isValid: false }
-    : { ...right, isValid: false };
+  return root;
 };
 
-var maxSumBST = function (root) {
-  return BST(root).sum;
+var flatten = function (root) {
+  if (!root) return;
+  // convertToLL(root);
+  flatBT(root);
 };
 
-const root = new TreeNode(4);
-root.left = new TreeNode(3);
-root.left.left = new TreeNode(1);
-root.left.right = new TreeNode(2);
+const root = new TreeNode(1);
+root.left = new TreeNode(2);
+root.left.left = new TreeNode(3);
+root.left.right = new TreeNode(4);
+root.right = new TreeNode(5);
+root.right.right = new TreeNode(6);
 
-maxSumBST(root);
+flatten(root);
